@@ -69,78 +69,74 @@ public class Controller extends Thread{
                 if (type == EventType.START_VIP_SECURITY) {
                     if (vipSecurity.isAvailable()) {
                         vipSecurity.setAvailable(false);
-                        Clock.getInstance().tick(100 + random.nextInt(3) * 100);
                         System.out.println("VIP Security tarkastaa asiakkaan, tarkastuksessa kuluu " + (Clock.getInstance().getCurrentTime() - time) + " yksikköä aikaa.");
-                        if (event.getCustomer().isKäyNarikassa()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_VIP_CLOAKROOM, customer));
-                            vipSecurity.setAvailable(true);
-                        } else if (event.getCustomer().isOstaako()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_MERCH, customer));
-                            vipSecurity.setAvailable(true);
-                        } else if (!event.getCustomer().isOstaako() && !event.getCustomer().isKäyNarikassa()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
-                            vipSecurity.setAvailable(true);
-                        }
+                        eventList.add(new Event((Clock.getInstance().getCurrentTime() + 100 + random.nextInt(3) * 100), EventType.FINISH_VIP_SECURITY, customer));
+                    }
+                } else if (type == EventType.FINISH_VIP_SECURITY) {
+                    vipSecurity.setAvailable(true);
+                    if (event.getCustomer().isKäyNarikassa()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_VIP_CLOAKROOM, customer));
+                    } else if (event.getCustomer().isOstaako()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_MERCH, customer));
+                    } else if (!event.getCustomer().isOstaako() && !event.getCustomer().isKäyNarikassa()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
                     }
                 } else if (type == EventType.START_VIP_CLOAKROOM) {
                     if (vipNarikka.isAvailable()) {
                         vipNarikka.setAvailable(false);
-                        Clock.getInstance().tick(100 + random.nextInt(3) * 100);
-                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.FINISH_VIP_CLOAKROOM, customer));
+                        eventList.add(new Event((Clock.getInstance().getCurrentTime() + 100 + random.nextInt(3) * 100), EventType.FINISH_VIP_CLOAKROOM, customer));
                         System.out.println("VIP Narikka käsittelee asiakkaan, siinä kesti " + (Clock.getInstance().getCurrentTime() - time) + " yksikköä aikaa.");
-                        if (event.getCustomer().isOstaako()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_MERCH, customer));
-                            vipNarikka.setAvailable(true);
-                        } else if (!event.getCustomer().isOstaako() && !event.getCustomer().isKäyNarikassa()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
-                            vipNarikka.setAvailable(true);
-                        }
+                    }
+                } else if (type == EventType.FINISH_VIP_CLOAKROOM) {
+                    vipNarikka.setAvailable(true);
+                    if (event.getCustomer().isOstaako()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_MERCH, customer));
+                    } else if (!event.getCustomer().isOstaako() && !event.getCustomer().isKäyNarikassa()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
                     }
                 } else if (type == EventType.START_GA_SECURITY) {
                     if (gaSecurity.isAvailable()) {
                         gaSecurity.setAvailable(false);
-                        Clock.getInstance().tick(100 + random.nextInt(3) * 100);
-                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.FINISH_GA_SECURITY, customer));
+                        eventList.add(new Event((Clock.getInstance().getCurrentTime() + 100 + random.nextInt(3) * 100), EventType.FINISH_GA_SECURITY, customer));
                         System.out.println("GA Security tarkastaa asiakkaan, tarkastuksessa kuluu " + (Clock.getInstance().getCurrentTime() - time) + " yksikköä aikaa.");
-                        if (event.getCustomer().isKäyNarikassa()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_GA_CLOAKROOM, customer));
-                            gaSecurity.setAvailable(true);
-                        } else if (event.getCustomer().isOstaako()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_MERCH, customer));
-                            gaSecurity.setAvailable(true);
-                        } else if (!event.getCustomer().isOstaako() && !event.getCustomer().isKäyNarikassa()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
-                            gaSecurity.setAvailable(true);
-                        }
+                    }
+                } else if (type == EventType.FINISH_GA_SECURITY) {
+                    gaSecurity.setAvailable(true);
+                    if (event.getCustomer().isKäyNarikassa()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_GA_CLOAKROOM, customer));
+                    } else if (event.getCustomer().isOstaako()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_MERCH, customer));
+                    } else if (!event.getCustomer().isOstaako() && !event.getCustomer().isKäyNarikassa()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
                     }
                 } else if (type == EventType.START_GA_CLOAKROOM) {
                     if (gaNarikka.isAvailable()) {
                         gaNarikka.setAvailable(false);
-                        Clock.getInstance().tick(100 + random.nextInt(3) * 100);
-                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.FINISH_GA_CLOAKROOM, customer));
+                        eventList.add(new Event((Clock.getInstance().getCurrentTime() + 100 + random.nextInt(3) * 100), EventType.FINISH_GA_CLOAKROOM, customer));
                         System.out.println("GA Narikka käsittelee asiakkaan, siinä kesti " + (Clock.getInstance().getCurrentTime() - time) + " yksikköä aikaa.");
-                        if (event.getCustomer().isOstaako()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_MERCH, customer));
-                            gaNarikka.setAvailable(true);
-                        } else if (!event.getCustomer().isOstaako() && !event.getCustomer().isKäyNarikassa()) {
-                            eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
-                            gaNarikka.setAvailable(true);
-                        }
+                    }
+                } else if (type == EventType.FINISH_GA_CLOAKROOM) {
+                    gaNarikka.setAvailable(true);
+                    if (event.getCustomer().isOstaako()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_MERCH, customer));
+                    } else if (!event.getCustomer().isOstaako() && !event.getCustomer().isKäyNarikassa()) {
+                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
                     }
                 } else if (type == EventType.START_MERCH) {
                     if (merch.isAvailable()) {
                         merch.setAvailable(false);
-                        Clock.getInstance().tick(100 + random.nextInt(3) * 100);
                         eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.FINISH_MERCH, customer));
-                        merch.setAvailable(true);
-                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
+
                         System.out.println("Oheistuotemyyntipiste palvelee asiakkaan, mihin kului " + (Clock.getInstance().getCurrentTime() - time) + " yksikköä aikaa.");
                     }
+                } else if (type == EventType.FINISH_MERCH) {
+                    merch.setAvailable(true);
+                    eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
+                } else {
+                    Thread.sleep(100);
                 }
-            } else {
-                Thread.sleep(100);
             }
-        } catch (InterruptedException e) {
+        }catch (InterruptedException e) {
             e.printStackTrace();
         }
         previousTime = time;
@@ -154,7 +150,7 @@ public class Controller extends Thread{
                 }
                 handleEvent(event);
 
-            Clock.getInstance().tick(1);
+            Clock.getInstance().tick(100);
         }
     }
     public static void main(String[] args) {
