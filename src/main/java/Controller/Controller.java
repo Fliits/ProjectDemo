@@ -64,7 +64,7 @@ public class Controller extends Thread{
         EventType type = event.getType();
         Customer customer = event.getCustomer();
         int time = (int) event.getTime();
-        try {
+        //try {
             if (Clock.getInstance().getCurrentTime() == time) {
                 if (type == EventType.START_VIP_SECURITY) {
                     if (vipSecurity.isAvailable()) {
@@ -125,20 +125,23 @@ public class Controller extends Thread{
                 } else if (type == EventType.START_MERCH) {
                     if (merch.isAvailable()) {
                         merch.setAvailable(false);
-                        eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.FINISH_MERCH, customer));
+                        eventList.add(new Event((Clock.getInstance().getCurrentTime()+ 100 + random.nextInt(3) * 100), EventType.FINISH_MERCH, customer));
 
                         System.out.println("Oheistuotemyyntipiste palvelee asiakkaan, mihin kului " + (Clock.getInstance().getCurrentTime() - time) + " yksikköä aikaa.");
                     }
                 } else if (type == EventType.FINISH_MERCH) {
                     merch.setAvailable(true);
                     eventList.add(new Event(Clock.getInstance().getCurrentTime(), EventType.START_ENTER_CONCERT_HALL, customer));
-                } else {
-                    Thread.sleep(100);
                 }
+            } else {
+                /*else {
+                    Thread.sleep(100);
+                }*/
+                Clock.getInstance().tick(100);
             }
-        }catch (InterruptedException e) {
+        /*}catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         previousTime = time;
     }
 
@@ -155,8 +158,6 @@ public class Controller extends Thread{
                 moveQueue(false);
             }
             handleEvent(event);
-
-            Clock.getInstance().tick(100);
         }
     }
     public static void main(String[] args) {
