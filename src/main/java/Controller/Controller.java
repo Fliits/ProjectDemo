@@ -144,29 +144,26 @@ public class Controller extends Thread{
 
     public void run() {
         while (!eventList.isEmpty()) {
-                Event event = eventList.remove();
-                if (event == null) {
-                    break;
-                }
-                handleEvent(event);
+            Event event = eventList.remove();
+            if (event == null) {
+                break;
+            }
+            if (vipAsiakasmäärä < vipKävijämäärä) {
+                moveQueue(true);
+            }
+            if (gaAsiakasmäärä < gaKävijämäärä) {
+                moveQueue(false);
+            }
+            handleEvent(event);
 
             Clock.getInstance().tick(100);
         }
     }
     public static void main(String[] args) {
         Controller controller = new Controller(20000, 10, 100, 10, 2, 3, 1, 2, 2);
-        controller.moveQueue(random.nextBoolean());
-        while (!eventList.isEmpty()) {
-            controller.run();
-            for (int i = 0; i < (controller.vipKävijämäärä + controller.gaKävijämäärä); i++) {
-                if (Clock.getInstance().getCurrentTime() < controller.simulaationKesto) {
-                    controller.moveQueue(random.nextBoolean());
-                    controller.run();
-                } else {
-                    System.out.println("Simulaatio on päättynyt.");
-                    break;
-                }
-            }
+            if (Clock.getInstance().getCurrentTime() < controller.simulaationKesto) {
+                controller.moveQueue(random.nextBoolean());
+                controller.run();
+            } System.out.println("Simulaatio on päättynyt.");
         }
     }
-}
