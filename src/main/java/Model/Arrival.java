@@ -9,11 +9,15 @@ public class Arrival extends Thread{
     public Arrival() {
     }
 
-    public Customer insertCustomerToQueue(boolean isVip) {
-        Customer customer = new Customer(isVip, random.nextInt(3), random.nextBoolean(), random.nextBoolean());
-        if (customer.isLippu()) {
-            customer.setLippu(true);
-        }
-        return customer;
+    public Event moveQueue(boolean isVIP) {
+        Customer customer = new Customer(isVIP, 1 + random.nextInt(3), random.nextBoolean(), random.nextBoolean());
+        Event event = null;
+        if (isVIP) {
+            event = new Event(Clock.getInstance().getCurrentTime(), EventType.START_VIP_SECURITY, customer);
+
+        } else if (!isVIP) {
+            event = new Event(Clock.getInstance().getCurrentTime(), EventType.START_GA_SECURITY, customer);
+        } return event;
     }
+
 }

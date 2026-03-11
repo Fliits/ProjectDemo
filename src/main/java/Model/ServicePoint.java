@@ -27,6 +27,8 @@ public class ServicePoint extends Thread{
         return isAvailable;
     }
 
+    public void handleCustomer(){}
+
     /*public void setPpID(String ppID) {
         this.ppID = ppID;
     }
